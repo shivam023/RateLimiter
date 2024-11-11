@@ -5,12 +5,12 @@ import org.example.ratelimiter.models.UserBucket;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserBucketRepository {
+public class RateLimiterManager {
     private final Map<String, UserBucket> userBuckets = new HashMap<>();
 
     private final Map<String, UserRateLimiterConfig> userConfigs = new HashMap<>();
 
-    public UserBucketRepository() {
+    public RateLimiterManager() {
     }
 
     public UserRateLimiterConfig getUserConfig(String userId) {
@@ -22,7 +22,9 @@ public class UserBucketRepository {
     }
 
     public UserBucket getUserBucket(String userId) {
-        if(!userBuckets.containsKey(userId)) userBuckets.put(userId, new UserBucket(userId, 5));
+        if(!userBuckets.containsKey(userId)) {
+            userBuckets.put(userId, new UserBucket(userId, userConfigs.get(userId).getRefillAmount()));
+        }
 
         return userBuckets.get(userId);
     }

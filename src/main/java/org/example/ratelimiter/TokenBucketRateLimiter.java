@@ -5,7 +5,7 @@ import org.example.ratelimiter.interfaces.RateLimiter;
 
 public class TokenBucketRateLimiter implements RateLimiter {
     @Override
-    public boolean allowRequest(String userId, UserBucketRepository repository, UserRateLimiterConfig config) {
+    public boolean allowRequest(String userId, RateLimiterManager repository, UserRateLimiterConfig config) {
         UserRateLimiterConfig rateLimiterConfig = repository.getUserConfig(userId);
         UserBucket userBucket = repository.getUserBucket(userId);
         refillTokensIfNeeded(rateLimiterConfig, userBucket);
@@ -25,7 +25,10 @@ public class TokenBucketRateLimiter implements RateLimiter {
         if(timeSinceLastRefill >= rateLimiterConfig.getRefillIntervalInMillis()) {
             long refillCycles = timeSinceLastRefill / rateLimiterConfig.getRefillIntervalInMillis();
             int tokensToAdd = (int) refillCycles * rateLimiterConfig.getRefillAmount();
-            if(userBucket.getAvailableTokens() < rateLimiterConfig.getMaxTokens()) tokensToAdd += rateLimiterConfig.getRewardAmount();
+            if(userBucket.getAvailableTokens() < rateLimiterConfig.getMaxTokens()) {
+                System.out.println(String.format("Adding reward amount %s for user %s", rateLimiterConfig.getRewardAmount(), userBucket.getUserId()));
+                tokensToAdd += rateLimiterConfig.getRewardAmount();
+            }
 
             int newTokenCount = Math.min(userBucket.getAvailableTokens() + tokensToAdd, rateLimiterConfig.getMaxTokens());
             userBucket.setAvailableTokens(newTokenCount);

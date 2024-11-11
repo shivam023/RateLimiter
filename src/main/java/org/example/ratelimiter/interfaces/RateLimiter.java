@@ -1,8 +1,8 @@
 package org.example.ratelimiter.interfaces;
 
 import org.example.ratelimiter.UserRateLimiterConfig;
-import org.example.ratelimiter.UserBucketRepository;
+import org.example.ratelimiter.RateLimiterManager;
 
 public interface RateLimiter {
-    boolean allowRequest(String userId, UserBucketRepository repository, UserRateLimiterConfig config);
+    boolean allowRequest(String userId, RateLimiterManager repository, UserRateLimiterConfig config);
 }

@@ -2,9 +2,9 @@ package org.example.ratelimiter;
 
 public class RateLimiterService {
 
-    private final UserBucketRepository repository;
+    private final RateLimiterManager repository;
 
-    public RateLimiterService(UserBucketRepository repository) {
+    public RateLimiterService(RateLimiterManager repository) {
         this.repository = repository;
     }
 
