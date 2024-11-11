@@ -5,9 +5,9 @@ import org.example.ratelimiter.interfaces.RateLimiter;
 
 public class TokenBucketRateLimiter implements RateLimiter {
     @Override
-    public boolean allowRequest(String userId, RateLimiterManager repository, UserRateLimiterConfig config) {
-        UserRateLimiterConfig rateLimiterConfig = repository.getUserConfig(userId);
-        UserBucket userBucket = repository.getUserBucket(userId);
+    public boolean allowRequest(String userId, RateLimiterManager rateLimiterManager, UserRateLimiterConfig config) {
+        UserRateLimiterConfig rateLimiterConfig = rateLimiterManager.getUserConfig(userId);
+        UserBucket userBucket = rateLimiterManager.getUserBucket(userId);
         refillTokensIfNeeded(rateLimiterConfig, userBucket);
 
         if(userBucket.getAvailableTokens() > 0) {
